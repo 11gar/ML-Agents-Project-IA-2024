@@ -1,3 +1,15 @@
 Il faut python 3.9.13 exclusivement
 
 Pour initialiser :
+
+python -m venv venv
+venv\scripts\activate
+python -m pip install --upgrade pip
+pip install mlagents
+pip install torch torchvision torchaudio
+pip install protobuf==3.20.3
+pip install onnx
+
+Good to go
+
+pour lancer le learning : mlagents-learn --run-id={test_id}    ((remplacer test_id))
