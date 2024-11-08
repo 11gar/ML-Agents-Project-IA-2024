@@ -1,0 +1,3 @@
+Il faut python 3.9.13 exclusivement
+
+Pour initialiser :
