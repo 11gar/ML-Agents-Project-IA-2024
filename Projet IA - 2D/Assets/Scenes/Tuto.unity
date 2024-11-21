@@ -935,6 +935,8 @@ MonoBehaviour:
   objectToReplicate: {fileID: 473394828}
   copiesX: 5
   copiesY: 4
+  offsetX: {x: 11, y: 0, z: 0}
+  offsetY: {x: 0, y: 11, z: 0}
 --- !u!4 &1330216835
 Transform:
   m_ObjectHideFlags: 0
@@ -1144,7 +1146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 4
+    VectorObservationSize: 10
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2

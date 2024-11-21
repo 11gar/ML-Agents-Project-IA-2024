@@ -7,8 +7,8 @@ public class EnvReplicator : MonoBehaviour
     public GameObject objectToReplicate; // The object to be replicated
     public int copiesX = 3;      // Number of copies to create
     public int copiesY = 3;      // Number of copies to create
-    private Vector3 offsetX = new Vector3(25 / 2, 0, 0); // Spacing between objects
-    private Vector3 offsetY = new Vector3(0, 25 / 2, 0); // Spacing between objects
+    public Vector3 offsetX;
+    public Vector3 offsetY;
 
     void Start()
     {
