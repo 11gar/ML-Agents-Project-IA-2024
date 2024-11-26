@@ -6,6 +6,8 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System.Globalization;
 using Unity.VisualScripting;
+using UnityEditor.Timeline;
+using System;
 
 public class MoveToTargetAgent : Agent
 {
@@ -19,18 +21,45 @@ public class MoveToTargetAgent : Agent
     private float timeSpent = 0f;
     private float startTime = 0f;
     private Rigidbody2D rb;
-
+    private RayPerceptionSensorComponent2D raySensor;
 
     override public void Initialize()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+    public void OnRaycastHit(RaycastHit2D hit)
+    {
+        Debug.Log("hit");
+        if (hit.collider != null)
+        {
+            if (hit.collider.TryGetComponent(out Checkpoint checkpoint))
+            {
+                if (currentCheckpoint == checkpoint.checkpointIndex)
+                {
+                    Debug.Log("Checkpoint hit");
+                    AddReward(0.5f);
+                }
+            }
+        }
+        if (hit.collider != null)
+        {
+            if (hit.collider.TryGetComponent(out Target target))
+            {
+                AddReward(1f);
+            }
+        }
+    }
+
+
     public override void OnEpisodeBegin()
     {
+        timeSpent = 0f;
         currentCheckpoint = 1;
-        //transform.localPosition = new Vector3(Random.Range(-3.5f, -1.5f), Random.Range(-3.5f, 3.5f));
-        //target.localPosition = new Vector3(Random.Range(1.5f, 3.5f), Random.Range(-3.5f, 3.5f));
-        transform.localPosition = new Vector3(-49, 8);
+        transform.localPosition = new Vector3(UnityEngine.Random.Range(-51f, -47f), UnityEngine.Random.Range(9f, 7f));
+        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 9f));
+        // transform.localPosition = new Vector3(UnityEngine.Random.Range(-3.5f, -1.5f), UnityEngine.Random.Range(-3.5f, 3.5f));
+        // target.localPosition = new Vector3(UnityEngine.Random.Range(1.5f, 3.5f), UnityEngine.Random.Range(-3.5f, 3.5f));
+        // transform.localPosition = new Vector3(-49, 8);
         this.startTime = Time.time;
     }
     public override void CollectObservations(VectorSensor sensor)
@@ -40,6 +69,16 @@ public class MoveToTargetAgent : Agent
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
+        // timeSpent += 0.01f;
+        // if (timeSpent < 1)
+        // {
+        //     return;
+        // }
+        // else
+        // {
+        //     Debug.Log("go");
+        // }
+
         float moveX = actions.ContinuousActions[0];
         float moveY = actions.ContinuousActions[1];
         transform.right = new Vector3(moveX, moveY, 0);
@@ -50,7 +89,12 @@ public class MoveToTargetAgent : Agent
 
         AddReward(timePenalty);
 
-        float movementSpeed = 5f;
+        float movementSpeed = 1f;
+        // float turnSpeed = 180f;
+
+        // transform.rotation *= Quaternion.Euler(0, 0, -turn * turnSpeed * Time.deltaTime);
+        // transform.position += transform.right * forward * movementSpeed * Time.deltaTime;
+
 
         transform.localPosition += new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed;
     }
@@ -64,7 +108,6 @@ public class MoveToTargetAgent : Agent
 
     private void EndEpisodeTriggered()
     {
-
         EndEpisode();
     }
 

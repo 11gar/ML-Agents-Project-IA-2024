@@ -1127,11 +1127,6 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   target: {fileID: 233547578}
-  checkpoints:
-  - {fileID: 407903089}
-  - {fileID: 1695520688}
-  obstacles:
-  - {fileID: 954684654}
   backgroundSpriteRenderer: {fileID: 979405904}
 --- !u!114 &1918435021
 MonoBehaviour:
