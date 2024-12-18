@@ -12,4 +12,4 @@ pip install onnx
 
 Good to go
 
-pour lancer le learning : mlagents-learn --run-id={test_id}    ((remplacer test_id))
+pour lancer le learning : mlagents-learn trainer_config.yaml --run-id=3 --force

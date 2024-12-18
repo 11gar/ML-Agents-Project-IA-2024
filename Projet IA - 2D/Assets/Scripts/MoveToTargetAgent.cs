@@ -65,8 +65,8 @@ public class MoveToTargetAgent : Agent
         // transform.position += transform.right * forward * movementSpeed * Time.deltaTime;
 
 
-        // rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
-        transform.localPosition += new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed;
+        rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
+        // transform.localPosition += new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -99,7 +99,7 @@ public class MoveToTargetAgent : Agent
             timeSpent = Time.time - startTime;
             AddReward(-5f);
 
-            EndEpisodeTriggered();
+            // EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
         {
