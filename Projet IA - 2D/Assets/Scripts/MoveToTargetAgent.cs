@@ -25,6 +25,8 @@ public class MoveToTargetAgent : Agent
     private float[] targetLocation = { 0, 0 };
     private float startDistance = 0;
     public Rigidbody2D rb;
+
+    private int collidedWalls = 0;
     public override void OnEpisodeBegin()
     {
         timeSpent = 0f;
@@ -59,14 +61,14 @@ public class MoveToTargetAgent : Agent
         AddReward(timePenalty);
 
         float movementSpeed = 2f;
-        // float turnSpeed = 180f;
 
-        // transform.rotation *= Quaternion.Euler(0, 0, -turn * turnSpeed * Time.deltaTime);
-        // transform.position += transform.right * forward * movementSpeed * Time.deltaTime;
-
-
+        this.timeSpent = Time.time - startTime;
         rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
-        // transform.localPosition += new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed;
+        if (timeSpent > 10f)
+        {
+            // backgroundSpriteRenderer.color = Color.red;
+            // EndEpisode();
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -95,10 +97,10 @@ public class MoveToTargetAgent : Agent
         }
         else if (collision.TryGetComponent(out Wall wall))
         {
-            backgroundSpriteRenderer.color = Color.red;
+            backgroundSpriteRenderer.color = Color.blue;
             timeSpent = Time.time - startTime;
+            collidedWalls += 1;
             AddReward(-5f);
-
             // EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
