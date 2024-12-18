@@ -20,43 +20,21 @@ public class MoveToTargetAgent : Agent
 
     private float timeSpent = 0f;
     private float startTime = 0f;
-    private Rigidbody2D rb;
-    private RayPerceptionSensorComponent2D raySensor;
 
-    override public void Initialize()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-    public void OnRaycastHit(RaycastHit2D hit)
-    {
-        Debug.Log("hit");
-        if (hit.collider != null)
-        {
-            if (hit.collider.TryGetComponent(out Checkpoint checkpoint))
-            {
-                if (currentCheckpoint == checkpoint.checkpointIndex)
-                {
-                    Debug.Log("Checkpoint hit");
-                    AddReward(0.5f);
-                }
-            }
-        }
-        if (hit.collider != null)
-        {
-            if (hit.collider.TryGetComponent(out Target target))
-            {
-                AddReward(1f);
-            }
-        }
-    }
-
-
+    private float[] startLocation = { 0, 0 };
+    private float[] targetLocation = { 0, 0 };
+    private float startDistance = 0;
+    public Rigidbody2D rb;
     public override void OnEpisodeBegin()
     {
         timeSpent = 0f;
         currentCheckpoint = 1;
         transform.localPosition = new Vector3(UnityEngine.Random.Range(-51f, -47f), UnityEngine.Random.Range(9f, 7f));
-        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 9f));
+        this.startLocation = new float[] { transform.localPosition.x, transform.localPosition.y };
+        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 5f));
+        this.targetLocation = new float[] { target.localPosition.x, target.localPosition.y };
+
+        this.startDistance = Vector2.Distance(new Vector2(this.startLocation[0], this.startLocation[1]), new Vector2(this.targetLocation[0], this.targetLocation[1]));
         // transform.localPosition = new Vector3(UnityEngine.Random.Range(-3.5f, -1.5f), UnityEngine.Random.Range(-3.5f, 3.5f));
         // target.localPosition = new Vector3(UnityEngine.Random.Range(1.5f, 3.5f), UnityEngine.Random.Range(-3.5f, 3.5f));
         // transform.localPosition = new Vector3(-49, 8);
@@ -69,15 +47,6 @@ public class MoveToTargetAgent : Agent
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // timeSpent += 0.01f;
-        // if (timeSpent < 1)
-        // {
-        //     return;
-        // }
-        // else
-        // {
-        //     Debug.Log("go");
-        // }
 
         float moveX = actions.ContinuousActions[0];
         float moveY = actions.ContinuousActions[1];
@@ -89,13 +58,14 @@ public class MoveToTargetAgent : Agent
 
         AddReward(timePenalty);
 
-        float movementSpeed = 1f;
+        float movementSpeed = 2f;
         // float turnSpeed = 180f;
 
         // transform.rotation *= Quaternion.Euler(0, 0, -turn * turnSpeed * Time.deltaTime);
         // transform.position += transform.right * forward * movementSpeed * Time.deltaTime;
 
 
+        // rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
         transform.localPosition += new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed;
     }
 
@@ -108,6 +78,9 @@ public class MoveToTargetAgent : Agent
 
     private void EndEpisodeTriggered()
     {
+        float endDistance = Vector2.Distance(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(target.localPosition.x, target.localPosition.y));
+        float distanceReward = startDistance - endDistance;
+        AddReward(distanceReward);
         EndEpisode();
     }
 
@@ -117,14 +90,15 @@ public class MoveToTargetAgent : Agent
         if (collision.TryGetComponent(out Target target))
         {
             backgroundSpriteRenderer.color = Color.green;
-            AddReward(50f);
+            AddReward(10f);
             EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Wall wall))
         {
             backgroundSpriteRenderer.color = Color.red;
             timeSpent = Time.time - startTime;
-            AddReward(-10f);
+            AddReward(-5f);
+
             EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
@@ -133,7 +107,7 @@ public class MoveToTargetAgent : Agent
             if (currentCheckpoint == checkpoint.checkpointIndex)
             {
                 backgroundSpriteRenderer.color = Color.blue;
-                AddReward(10f);
+                AddReward(2f);
             }
             this.currentCheckpoint = checkpoint.checkpointIndex + 1;
         }
