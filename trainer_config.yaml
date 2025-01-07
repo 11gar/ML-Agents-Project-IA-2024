@@ -1,17 +1,21 @@
 behaviors:
   MoveToTargetAgent:
     trainer_type: ppo
+    # trainer_settings:
+    #   batch_size: 64
+    #   buffer_size: 1024
+  # Add any other settings you need
+    summary_freq: 1000 # This will log every 1000 steps
     hyperparameters:
       batch_size: 32
-      buffer_size: 256
+      buffer_size: 640
       learning_rate: 0.0003
       beta: 0.005
       epsilon: 0.2
       lambd: 0.95
       num_epoch: 3
       learning_rate_schedule: linear
-    max_steps: 2000000
-    summary_freq: 5000
+    max_steps: 400000
     checkpoint_interval: 100000
 
     #   learning_rate_schedule: constant

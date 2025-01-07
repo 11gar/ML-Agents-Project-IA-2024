@@ -20,6 +20,8 @@ public class MoveToTargetAgent : Agent
 
     private float timeSpent = 0f;
     private float startTime = 0f;
+    private int stepCount = 0;
+    private int episodeCount = 0;
 
     private float[] startLocation = { 0, 0 };
     private float[] targetLocation = { 0, 0 };
@@ -29,7 +31,8 @@ public class MoveToTargetAgent : Agent
     private int collidedWalls = 0;
     public override void OnEpisodeBegin()
     {
-        timeSpent = 0f;
+        episodeCount++;
+        stepCount = 0; 
         currentCheckpoint = 1;
         transform.localPosition = new Vector3(UnityEngine.Random.Range(-51f, -47f), UnityEngine.Random.Range(9f, 7f));
         this.startLocation = new float[] { transform.localPosition.x, transform.localPosition.y };
@@ -49,7 +52,7 @@ public class MoveToTargetAgent : Agent
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
-
+        stepCount++;
         float moveX = actions.ContinuousActions[0];
         float moveY = actions.ContinuousActions[1];
         transform.right = new Vector3(moveX, moveY, 0);
@@ -67,8 +70,12 @@ public class MoveToTargetAgent : Agent
         if (timeSpent > 10f)
         {
             // backgroundSpriteRenderer.color = Color.red;
-            // EndEpisode();
+            EndEpisode();
         }
+        // else if (stepCount >500)
+        // {
+        //     EndEpisode();
+        // }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -86,6 +93,12 @@ public class MoveToTargetAgent : Agent
         EndEpisode();
     }
 
+    public void OnEpisodeEnd()
+    {
+        // Log the results at the end of each episode
+        Debug.Log($"Episode {episodeCount}: Steps = {stepCount}, Total Reward = {GetCumulativeReward()}");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Debug.Log(collision);
@@ -101,7 +114,7 @@ public class MoveToTargetAgent : Agent
             timeSpent = Time.time - startTime;
             collidedWalls += 1;
             AddReward(-5f);
-            // EndEpisodeTriggered();
+            EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
         {

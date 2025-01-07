@@ -1,0 +1,65 @@
+{
+    "MoveToTargetAgent": {
+        "checkpoints": [
+            {
+                "steps": 99989,
+                "file_path": "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-99989.onnx",
+                "reward": -3.612030263990164,
+                "creation_time": 1736263030.21213,
+                "auxillary_file_paths": [
+                    "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-99989.pt"
+                ]
+            },
+            {
+                "steps": 199993,
+                "file_path": "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-199993.onnx",
+                "reward": -3.478579266819843,
+                "creation_time": 1736263094.7233021,
+                "auxillary_file_paths": [
+                    "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-199993.pt"
+                ]
+            },
+            {
+                "steps": 299959,
+                "file_path": "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-299959.onnx",
+                "reward": -2.1679625405791056,
+                "creation_time": 1736263158.9050999,
+                "auxillary_file_paths": [
+                    "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-299959.pt"
+                ]
+            },
+            {
+                "steps": 399973,
+                "file_path": "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-399973.onnx",
+                "reward": -0.22874962261744908,
+                "creation_time": 1736263223.8161325,
+                "auxillary_file_paths": [
+                    "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-399973.pt"
+                ]
+            },
+            {
+                "steps": 400030,
+                "file_path": "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-400030.onnx",
+                "reward": -0.2559937985850052,
+                "creation_time": 1736263223.8354611,
+                "auxillary_file_paths": [
+                    "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-400030.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 400030,
+            "file_path": "results\\14\\MoveToTargetAgent.onnx",
+            "reward": -0.2559937985850052,
+            "creation_time": 1736263223.8354611,
+            "auxillary_file_paths": [
+                "results\\14\\MoveToTargetAgent\\MoveToTargetAgent-400030.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}
