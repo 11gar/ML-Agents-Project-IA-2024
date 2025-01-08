@@ -34,9 +34,29 @@ public class MoveToTargetAgent : Agent
         episodeCount++;
         stepCount = 0; 
         currentCheckpoint = 1;
-        transform.localPosition = new Vector3(UnityEngine.Random.Range(-51f, -47f), UnityEngine.Random.Range(9f, 7f));
+        transform.localPosition = new Vector3(UnityEngine.Random.Range(-50f, -48f), UnityEngine.Random.Range(9f, 7f));
         this.startLocation = new float[] { transform.localPosition.x, transform.localPosition.y };
-        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 5f));
+        Vector3[] predefinedPositions = new Vector3[]   
+        {
+            new Vector3(-44f, 15f, 0f), //admin
+            new Vector3(-50f, 2f, 0f), //petit amphi
+            new Vector3(-44f, 8f, 0f), //petit hall
+            new Vector3(-44f, 3f, 0f), //devant amphi
+            new Vector3(-41f, 3.2f, 0f), //toilettes 2 entree
+            new Vector3(-41f, 5f, 0f), //toilettes 1 entree
+            new Vector3(-41f, 0f, 0f), //escalier
+            new Vector3(-39f, -4f, 0f) //bureau 1
+            // new Vector3(-32f, -4f, 0f), //bibliothèque
+            // new Vector3(-19f, -1f, 0f), //hall sud
+            // new Vector3(-9f, 0f, 0f), //S101
+            // new Vector3(-23.5f, -9f, 0f), //foyer
+            // new Vector3(-4f, -8f, 0f), //S111
+            // new Vector3(-11f, -14f, 0f), //S110
+            // new Vector3(-4f, -14f, 0f) //S112
+        };
+        Vector3 selectedPosition = predefinedPositions[UnityEngine.Random.Range(0, predefinedPositions.Length)];
+        target.localPosition = selectedPosition;
+        //  target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 5f));
         this.targetLocation = new float[] { target.localPosition.x, target.localPosition.y };
 
         this.startDistance = Vector2.Distance(new Vector2(this.startLocation[0], this.startLocation[1]), new Vector2(this.targetLocation[0], this.targetLocation[1]));
@@ -118,13 +138,17 @@ public class MoveToTargetAgent : Agent
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
         {
-
+            Vector3 checkpointPosition = checkpoint.transform.position;
             if (currentCheckpoint == checkpoint.checkpointIndex)
             {
                 backgroundSpriteRenderer.color = Color.blue;
                 AddReward(2f);
+                if (checkpointPosition.x < this.target.localPosition.x || checkpointPosition.y > this.target.localPosition.y)
+                {
+                    this.currentCheckpoint = checkpoint.checkpointIndex + 1;
+                }
             }
-            this.currentCheckpoint = checkpoint.checkpointIndex + 1;
+            
         }
     }
 }
