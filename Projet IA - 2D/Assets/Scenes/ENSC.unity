@@ -1244,8 +1244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToReplicate: {fileID: 1730622823}
-  copiesX: 4
-  copiesY: 3
+  copiesX: 1
+  copiesY: 1
   offsetX: {x: 20, y: 0, z: 0}
   offsetY: {x: 0, y: 15, z: 0}
 --- !u!4 &666680150
@@ -1481,6 +1481,7 @@ MonoBehaviour:
   MaxStep: 0
   target: {fileID: 497794578}
   backgroundSpriteRenderer: {fileID: 197429107}
+  movementSpeed: 0.2
   rb: {fileID: 798975974}
 --- !u!114 &798975973
 MonoBehaviour:
@@ -3772,7 +3773,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 17.069492
+  orthographic size: 8.50068
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3796,7 +3797,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930820089}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.1, y: 12.1, z: -10}
+  m_LocalPosition: {x: -44.42, y: 4.76, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

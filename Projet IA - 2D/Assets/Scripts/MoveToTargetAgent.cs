@@ -21,6 +21,9 @@ public class MoveToTargetAgent : Agent
     private float timeSpent = 0f;
     private float startTime = 0f;
 
+    public float movementSpeed = 0.8f;
+
+
     private float[] startLocation = { 0, 0 };
     private float[] targetLocation = { 0, 0 };
     private float startDistance = 0;
@@ -33,7 +36,7 @@ public class MoveToTargetAgent : Agent
         currentCheckpoint = 1;
         transform.localPosition = new Vector3(UnityEngine.Random.Range(-51f, -47f), UnityEngine.Random.Range(9f, 7f));
         this.startLocation = new float[] { transform.localPosition.x, transform.localPosition.y };
-        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 5f));
+        target.localPosition = new Vector3(UnityEngine.Random.Range(-44f, -38f), UnityEngine.Random.Range(0f, 8f));
         this.targetLocation = new float[] { target.localPosition.x, target.localPosition.y };
 
         this.startDistance = Vector2.Distance(new Vector2(this.startLocation[0], this.startLocation[1]), new Vector2(this.targetLocation[0], this.targetLocation[1]));
@@ -60,7 +63,6 @@ public class MoveToTargetAgent : Agent
 
         AddReward(timePenalty);
 
-        float movementSpeed = 2f;
 
         this.timeSpent = Time.time - startTime;
         rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
@@ -91,24 +93,24 @@ public class MoveToTargetAgent : Agent
         // Debug.Log(collision);
         if (collision.TryGetComponent(out Target target))
         {
-            backgroundSpriteRenderer.color = Color.green;
+            // backgroundSpriteRenderer.color = Color.green;
             AddReward(10f);
             EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Wall wall))
         {
-            backgroundSpriteRenderer.color = Color.blue;
+            // backgroundSpriteRenderer.color = Color.red;
             timeSpent = Time.time - startTime;
             collidedWalls += 1;
             AddReward(-5f);
-            // EndEpisodeTriggered();
+            EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Checkpoint checkpoint))
         {
 
             if (currentCheckpoint == checkpoint.checkpointIndex)
             {
-                backgroundSpriteRenderer.color = Color.blue;
+                // backgroundSpriteRenderer.color = Color.blue;
                 AddReward(2f);
             }
             this.currentCheckpoint = checkpoint.checkpointIndex + 1;
