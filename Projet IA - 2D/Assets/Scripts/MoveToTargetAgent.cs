@@ -32,11 +32,11 @@ public class MoveToTargetAgent : Agent
     public override void OnEpisodeBegin()
     {
         episodeCount++;
-        stepCount = 0; 
+        stepCount = 0;
         currentCheckpoint = 1;
         transform.localPosition = new Vector3(UnityEngine.Random.Range(-50f, -48f), UnityEngine.Random.Range(9f, 7f));
         this.startLocation = new float[] { transform.localPosition.x, transform.localPosition.y };
-        Vector3[] predefinedPositions = new Vector3[]   
+        Vector3[] predefinedPositions = new Vector3[]
         {
             new Vector3(-44f, 15f, 0f), //admin
             new Vector3(-50f, 2f, 0f), //petit amphi
@@ -83,15 +83,15 @@ public class MoveToTargetAgent : Agent
 
         AddReward(timePenalty);
 
-        float movementSpeed = 2f;
+        float movementSpeed = 0.2f;
 
         this.timeSpent = Time.time - startTime;
         rb.MovePosition(transform.position + (new Vector3(moveX, moveY) * Time.deltaTime * movementSpeed));
-        if (timeSpent > 10f)
-        {
-            // backgroundSpriteRenderer.color = Color.red;
-            EndEpisode();
-        }
+        // if (timeSpent > 10f)
+        // {
+        //     // backgroundSpriteRenderer.color = Color.red;
+        //     EndEpisode();
+        // }
         // else if (stepCount >500)
         // {
         //     EndEpisode();
@@ -124,13 +124,13 @@ public class MoveToTargetAgent : Agent
         // Debug.Log(collision);
         if (collision.TryGetComponent(out Target target))
         {
-            backgroundSpriteRenderer.color = Color.green;
+            // backgroundSpriteRenderer.color = Color.green;
             AddReward(10f);
             EndEpisodeTriggered();
         }
         else if (collision.TryGetComponent(out Wall wall))
         {
-            backgroundSpriteRenderer.color = Color.blue;
+            // backgroundSpriteRenderer.color = Color.blue;
             timeSpent = Time.time - startTime;
             collidedWalls += 1;
             AddReward(-5f);
@@ -141,14 +141,14 @@ public class MoveToTargetAgent : Agent
             Vector3 checkpointPosition = checkpoint.transform.position;
             if (currentCheckpoint == checkpoint.checkpointIndex)
             {
-                backgroundSpriteRenderer.color = Color.blue;
+                // backgroundSpriteRenderer.color = Color.blue;
                 AddReward(2f);
                 if (checkpointPosition.x < this.target.localPosition.x || checkpointPosition.y > this.target.localPosition.y)
                 {
                     this.currentCheckpoint = checkpoint.checkpointIndex + 1;
                 }
             }
-            
+
         }
     }
 }
